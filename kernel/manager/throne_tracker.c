@@ -442,6 +442,11 @@ void ksu_handle_rename(struct dentry *old_dentry, struct dentry *new_dentry)
 #ifdef CONFIG_KSU_SUSFS
     struct callback_head *cb;
 
+    // Fallback if TWA_RESUME is missing from kernel headers
+    #ifndef TWA_RESUME
+    #define TWA_RESUME 0
+    #endif
+
     if (!(current->flags & PF_KTHREAD)) {
         cb = kzalloc(sizeof(*cb), GFP_KERNEL);
         if (cb) {
